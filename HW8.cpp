@@ -43,7 +43,19 @@ void dijkstra(int s, int t) {
     inDuong(s, t, truoc);
 }
 
+int nhapDinh(string nhanLabel) {
+    cout << "Danh sach dinh:\n";
+    for (int i = 0; i < V; i++) cout << "  " << i << ": " << ten[i] << "\n";
+    int x;
+    do {
+        cout << nhanLabel << " (0-" << V - 1 << "): ";
+        cin >> x;
+    } while (x < 0 || x >= V);
+    return x;
+}
+
 int main() {
+    for (int k = 0; k < E; k++) mat[canh[k][0]][canh[k][1]] = mat[canh[k][1]][canh[k][0]] = canh[k][2];
     build();
     int start = 0, target = 6;
 
