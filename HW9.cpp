@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <climits>
 using namespace std;
 
 const int V = 11;
@@ -24,6 +25,7 @@ void kruskal() {
 
     for (int i = 0; i < V; i++) cha[i] = i;
 
+    cout << "KRUSKAL " << endl;
     int tongTrongSo = 0;
     for (int i = 0; i < E; i++) {
         int u = e[i].u, v = e[i].v, w = e[i].w;
@@ -36,6 +38,41 @@ void kruskal() {
     cout << "Tong trong so MST: " << tongTrongSo << endl;
 }
 
+int mat[V][V];
+
+void prim(int start) {
+    for (int k = 0; k < E; k++)
+        mat[canh[k].u][canh[k].v] = mat[canh[k].v][canh[k].u] = canh[k].w;
+
+    bool inMST[V] = {};
+    int key[V], truoc[V];
+    for (int i = 0; i < V; i++) { key[i] = INT_MAX; truoc[i] = -1; }
+    key[start] = 0;
+
+    cout << "PRIM " << endl;
+    int tongTrongSo = 0;
+
+    for (int count = 0; count < V; count++) {
+        int u = -1, best = INT_MAX;
+        for (int i = 0; i < V; i++)
+            if (!inMST[i] && key[i] < best) best = key[u = i];
+
+        inMST[u] = true;
+        if (truoc[u] != -1) {
+            cout << ten[truoc[u]] << " - " << ten[u] << endl;
+            tongTrongSo += key[u];
+        }
+
+        for (int v = 0; v < V; v++)
+            if (mat[u][v] && !inMST[v] && mat[u][v] < key[v]) {
+                key[v] = mat[u][v];
+                truoc[v] = u;
+            }
+    }
+    cout << "Tong trong so MST: " << tongTrongSo << endl;
+}
+
 int main() {
     kruskal();
+    prim(2);
 }
